@@ -1,19 +1,10 @@
-export default class Currency {
-  constructor(code, name) {
-    this.code = code;
+export default class HolbertonCourse {
+  constructor(name, length, students) {
     this.name = name;
+    this.length = length;
+    this.students = students;
   }
 
-  // setter method for code
-  set code(value) {
-    if (typeof value === 'string') {
-      this._code = value;
-    } else {
-      throw new TypeError('Code must be a string');
-    }
-  }
-
-  // setter method for name
   set name(value) {
     if (typeof value === 'string') {
       this._name = value;
@@ -22,17 +13,31 @@ export default class Currency {
     }
   }
 
-  // getter method for code
-  get code() {
-    return this._code;
+  set length(value) {
+    if (typeof value === 'number') {
+      this._length = value;
+    } else {
+      throw new TypeError('Length must be a number');
+    }
   }
 
-  // getter methof for name
+  set students(value) {
+    if (Array.isArray(value) && value.every((item) => typeof item === 'string')) {
+      this._students = value;
+    } else {
+      throw new TypeError('Students must be an array of strings');
+    }
+  }
+
   get name() {
     return this._name;
   }
 
-  displayFullCurrency() {
-    return `${this.name} (${this.code})`;
+  get length() {
+    return this._length;
+  }
+
+  get students() {
+    return this._students;
   }
 }
