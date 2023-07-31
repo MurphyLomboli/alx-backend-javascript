@@ -1,24 +1,19 @@
-import { signUpUser } from './4-user-promise.js';
-import { uploadPhoto } from './5-photo-reject.js';
+import signUpUser from './4-user-promise';
+import uploadPhoto from './5-photo-reject';
 
-// Define the handleProfileSignup function
-export const handleProfileSignup = async (firstName, lastName, fileName) => {
-  try {
-    // Call the signUpUser and uploadPhoto functions
-    const userPromise = signUpUser(firstName, lastName);
-    const photoPromise = uploadPhoto(fileName);
-
-    // Wait for all promises to be settled
-    const [userResult, photoResult] = await Promise.allSettled([userPromise, photoPromise]);
-
-    // Return the array with status and value/error of each promise
-    return [
-      { status: userResult.status, value: userResult.value },
-      { status: photoResult.status, value: photoResult.value },
-    ];
-  } catch (error) {
-    // Handle any errors that occurred during the promise settlement
-    console.error('Error:', error);
-    throw error; // Optionally rethrow the error to be caught by the caller of handleProfileSignup
-  }
-};
+export default function handleProfileSignup(firstName, lastName, filename) {
+  const signup = signUpUser(firstName, lastName);
+  const upload = uploadPhoto(filename);
+  const promises = [signup, upload];
+  return Promise.allSettled(promises)
+    .then((results) => {
+      results.map((result) => {
+        if (result.status) {
+          console.log({
+            status: result.status,
+            value: result.value || `Error ${result.reason.message}`,
+          });
+        }
+      });
+    });
+}
