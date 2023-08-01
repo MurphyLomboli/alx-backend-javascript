@@ -1,6 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable camelcase */
-
 import getListStudents from './0-get_list_students';
 
 const getListStudentIds = (getListStudents) => {
