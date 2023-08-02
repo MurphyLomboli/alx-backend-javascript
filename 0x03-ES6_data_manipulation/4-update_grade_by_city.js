@@ -1,27 +1,17 @@
-function updateStudentGradeByCity(students, city, newGrades) {
-  // Check if the input is a valid array of students
-  if (!Array.isArray(students)) {
-    throw new Error("Input should be an array of students.");
-  }
+import getListStudents from './0-get_list_students';
 
-  // Check if the newGrades is a valid array of objects
-  if (!Array.isArray(newGrades) || newGrades.length === 0) {
-    throw new Error("newGrades should be a non-empty array of objects.");
-  }
+const updateStudentGradeByCity = (getListStudents, city, newGrades) => {
+  const student_city = getListStudents.filter((student) => student.location === city);
 
-  // Create a set of student IDs to optimize lookup
-  const studentIdSet = new Set(newGrades.map((grade) => grade.studentId));
-
-  // Update the grades of students from the given city
-  const updatedStudents = students.map((student) => {
-    if (student.location === city && studentIdSet.has(student.id)) {
-      const gradeUpdate = newGrades.find((grade) => grade.studentId === student.id);
-      student.grade = gradeUpdate.grade;
+  const updatedStudents = student_city.map((student) => {
+    const updatedGrade = newGrades.find((grade) => grade.studentId === student.id);
+    if (updatedGrade) {
+      return { ...student, grade: updatedGrade.grade };
     }
-    return student;
+    return { ...student, grade: 'N/A' };
   });
 
   return updatedStudents;
-}
+};
 
 export default updateStudentGradeByCity;
